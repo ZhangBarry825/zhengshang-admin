@@ -7,13 +7,13 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img :src="avatar" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              首页
+              正尚网络
             </el-dropdown-item>
           </router-link>
 <!--          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">-->
@@ -44,8 +44,13 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      // 'avatar'
     ])
+  },
+  data(){
+    return{
+    avatar: require('@/assets/logo/logo1.png')
+    }
   },
   methods: {
     toggleSideBar() {

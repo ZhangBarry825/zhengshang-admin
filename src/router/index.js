@@ -51,32 +51,61 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
+      meta: { title: '正尚网络', icon: 'dashboard' }
     }]
   },
 
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/table',
+  //   name: 'Example',
+  //   meta: { title: 'Example', icon: 'el-icon-s-help' },
+  //   children: [
+  //     {
+  //       path: 'table',
+  //       name: 'Table',
+  //       component: () => import('@/views/table/index'),
+  //       meta: { title: 'Table', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'tree',
+  //       name: 'Tree',
+  //       component: () => import('@/views/tree/index'),
+  //       meta: { title: 'Tree', icon: 'tree' }
+  //     }
+  //   ]
+  // },
   {
-    path: '/example',
+    path: '/home',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    name:'Home',
+    meta: {
+      title: '官网首页',
+      icon: 'nested'
+    },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'banner',
+        name: 'BannerList',
+        meta: { title: '轮播图', icon: 'form' },
+        component: () => import('@/views/home/BannerList'),
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'banner/edit',
+        component: () => import('@/views/home/BannerEdit'),
+        name: 'BannerEdit',
+        meta: { title: '编辑轮播图'},
+        hidden:true
+      },
+      {
+        path: 'solve',
+        name: 'SolveMethod',
+        component: () => import('@/views/home/SolveMethod'),
+        meta: { title: '行业解决方案', icon: 'form' }
       }
     ]
   },
-
   {
     path: '/form',
     component: Layout,
