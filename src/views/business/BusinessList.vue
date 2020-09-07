@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <MenuTitle title="行业解决方案"></MenuTitle>
+    <MenuTitle title="业务领域列表"></MenuTitle>
     <MenuControl :right="{}"></MenuControl>
     <el-table
       v-loading="loading"
@@ -13,9 +13,9 @@
       <el-table-column
         label="标题"
         prop="title"
-        width="250">
+        width="280">
       </el-table-column>
-      <el-table-column label="图片">
+      <el-table-column label="图片" width="150">
         <template slot-scope="scope">
           <el-image
             style="width: 100px; height: 100px"
@@ -26,10 +26,10 @@
       </el-table-column>
       <el-table-column
         label="描述"
-        prop="content"
+        prop="remark"
         width="300">
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" >
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -50,13 +50,32 @@
 <script>
   import MenuTitle from "@/components/MenuTitle/MenuTitle";
   import MenuControl from "@/components/MenuControl/MenuControl";
-  import {fetchSolveMethods} from "@/api/admin";
+  import {fetchBusinessList} from "@/api/admin";
 
   export default {
-    name: "SolveMethod",
+    name: "BusinessList",
     components: {
       MenuTitle,
       MenuControl
+    },
+    methods:{
+      handleEdit(index, row) {
+        console.log(index, row);
+        this.$router.push('/business/edit?id='+row.id)
+      },
+      handleDelete(index, row) {
+        console.log(index, row);
+      },
+      async fetchData(){
+        let that = this
+        this.loading=true
+        let res = await fetchBusinessList()
+        this.tableData=res.data || []
+        setTimeout(()=>{
+          that.loading=false
+        },500)
+        console.log(res)
+      }
     },
     data() {
       return {
@@ -64,31 +83,12 @@
         tableData: [{}]
       }
     },
-    methods: {
-      async fetchData() {
-        let that = this
-        this.loading=true
-        let res=await fetchSolveMethods()
-        this.tableData=res.data || []
-        setTimeout(()=>{
-          that.loading=false
-        },500)
-        console.log(res)
-      },
-      handleEdit(index, row) {
-        console.log(index, row);
-        this.$router.push('/home/solve/edit?id='+row.id)
-      },
-      handleDelete(index, row) {
-        console.log(index, row);
-      },
-    },
     mounted() {
       this.fetchData()
     }
   }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 
 </style>

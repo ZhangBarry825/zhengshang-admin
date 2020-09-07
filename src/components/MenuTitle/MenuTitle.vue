@@ -24,7 +24,7 @@
 <style scoped lang="scss">
   .page {
     width: 100%;
-    padding:0 0 20px 0;
+    padding:10px 0 30px 0;
   }
 
 </style>

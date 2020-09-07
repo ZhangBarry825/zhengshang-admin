@@ -7,7 +7,7 @@ import qs from 'qs'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  withCredentials: false, // send cookies when cross-domain requests
+  // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
 
@@ -15,9 +15,9 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
 
-    if (store.getters.token) {
-      config.headers['X-Token'] = getToken()
-    }
+    // if (store.getters.token) {
+    //   config.headers['X-Token'] = getToken()
+    // }
     config.data=qs.stringify(config.data)
     return config
   },

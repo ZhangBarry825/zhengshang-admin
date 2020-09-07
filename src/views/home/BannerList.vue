@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <MenuTitle title="轮播列表"></MenuTitle>
-    <MenuControl></MenuControl>
+    <MenuControl :right="{}"></MenuControl>
     <el-table
       v-loading="loading"
       :data="tableData"
@@ -13,7 +13,7 @@
       <el-table-column
         label="标题"
         prop="title"
-        width="180">
+        width="280">
       </el-table-column>
       <el-table-column label="图片">
         <template slot-scope="scope">
@@ -61,29 +61,13 @@
     data() {
       return {
         loading:false,
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
+        tableData: [{}]
       }
     },
     methods: {
       handleEdit(index, row) {
         console.log(index, row);
-        this.$router.push('/home/banner/edit')
+        this.$router.push('/home/banner/edit?id='+row.id)
       },
       handleDelete(index, row) {
         console.log(index, row);

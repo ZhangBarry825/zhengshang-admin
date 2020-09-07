@@ -18,8 +18,8 @@ router.beforeEach(async(to, from, next) => {
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
-  // const hasToken = getToken()
-  const hasToken = true
+  const hasToken = getToken()
+  // const hasToken = true
 
   if (hasToken) {
     if (to.path === '/login') {
@@ -34,7 +34,6 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           await store.dispatch('user/getInfo')
-
           next()
         } catch (error) {
           // remove token and go to login page to re-login

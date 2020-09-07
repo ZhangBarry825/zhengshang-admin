@@ -1,9 +1,12 @@
 <template>
   <div class="page">
-    <MenuTitle title="编辑轮播图"></MenuTitle>
+    <MenuTitle title="编辑业务领域"></MenuTitle>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="标题" prop="title">
         <el-input v-model="ruleForm.title"></el-input>
+      </el-form-item>
+      <el-form-item label="简介" prop="title">
+        <el-input v-model="ruleForm.remark"></el-input>
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input v-model="ruleForm.sort"></el-input>
@@ -11,7 +14,7 @@
       <el-form-item label="图片" prop="img">
         <Uploader :backImg="ruleForm.img" :limitNum="1" @handSubmit="imgSubmit" @handRemove="imgRemove"></Uploader>
       </el-form-item>
-      <el-form-item label="描述" prop="content">
+      <el-form-item label="详情" prop="content">
         <el-input type="textarea" v-model="ruleForm.content"></el-input>
       </el-form-item>
       <el-form-item>
@@ -19,22 +22,23 @@
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
+
   </div>
 </template>
 
 <script>
   import MenuTitle from "@/components/MenuTitle/MenuTitle";
-  import {editBanner, fetchBannerDetail} from "@/api/admin";
-  import Uploader from '@/components/Article/uploader/uploader'
+  import Uploader from "@/components/Article/uploader/uploader";
+  import {editBanner, editBusiness, fetchBusinessDetail} from "@/api/admin";
+
   export default {
-    name: "BannerEdit",
+    name: "BusinessEdit",
     components: {
       MenuTitle,
       Uploader,
     },
     data(){
       return{
-        baseImgUrl: this.$imgBaseUrl,
         ruleForm: {
           id:'',
           title: '',
@@ -47,6 +51,9 @@
             { required: true, message: '请输入标题', trigger: 'blur' },
             { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
           ],
+          remark: [
+            { required: true, message: '请输入简介', trigger: 'blur' }
+          ],
           sort: [
             { required: true, message: '请输入排序', trigger: 'blur' }
           ],
@@ -54,26 +61,22 @@
             { required: true, message: '请上传图片', trigger: 'blur' }
           ],
           content: [
-            { required: true, message: '请填写描述信息', trigger: 'blur' }
+            { required: true, message: '请填写详情信息', trigger: 'blur' }
           ]
         }
       }
     },
     methods:{
-     fetchData(){
-       let that = this
-       fetchBannerDetail({id:that.ruleForm.id}).then((res)=>{
-         that.ruleForm.title=res.data.title
-         that.ruleForm.img=res.data.img
-         that.ruleForm.content=res.data.content
-         that.ruleForm.sort=res.data.sort
-       })
+      async fetchData(){
+        let res=await fetchBusinessDetail({id:this.ruleForm.id})
+        console.log(res.data)
+        this.ruleForm=res.data
       },
       submitForm(formName) {
         let that = this
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            editBanner({
+            editBusiness({
               ...this.ruleForm,
             }).then(res=>{
               if(res.code==1){
@@ -114,7 +117,5 @@
 </script>
 
 <style scoped lang="scss">
-  .page {
 
-  }
 </style>
