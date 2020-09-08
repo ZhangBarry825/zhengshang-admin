@@ -1,21 +1,12 @@
 <template>
   <div class="page">
-    <MenuTitle title="编辑业务领域"></MenuTitle>
+    <MenuTitle title="页面配置"></MenuTitle>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="标题" prop="title">
         <el-input v-model="ruleForm.title" disabled></el-input>
       </el-form-item>
-      <el-form-item label="简介" prop="title">
-        <el-input v-model="ruleForm.remark"></el-input>
-      </el-form-item>
-      <el-form-item label="排序" prop="sort">
-        <el-input v-model="ruleForm.sort"></el-input>
-      </el-form-item>
-      <el-form-item label="图片" prop="img">
+      <el-form-item label="背景图片" prop="img">
         <Uploader :backImg="ruleForm.img" :limitNum="1" @handSubmit="imgSubmit" @handRemove="imgRemove"></Uploader>
-      </el-form-item>
-      <el-form-item label="详情" prop="content">
-        <el-input type="textarea" :rows="5" v-model="ruleForm.content"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -29,10 +20,17 @@
 <script>
   import MenuTitle from "@/components/MenuTitle/MenuTitle";
   import Uploader from "@/components/Article/uploader/uploader";
-  import {editBanner, editBusiness, fetchBusinessDetail} from "@/api/admin";
+  import {
+    editBanner,
+    editBusiness,
+    editBusinessConfig,
+    editContactConfig,
+    fetchBusinessConfig,
+    fetchBusinessDetail, fetchContactConfig
+  } from "@/api/admin";
 
   export default {
-    name: "BusinessEdit",
+    name: "ContactConfig",
     components: {
       MenuTitle,
       Uploader,
@@ -68,7 +66,7 @@
     },
     methods:{
       async fetchData(){
-        let res=await fetchBusinessDetail({id:this.ruleForm.id})
+        let res=await fetchContactConfig()
         console.log(res.data)
         this.ruleForm=res.data
       },
@@ -76,7 +74,7 @@
         let that = this
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            editBusiness({
+            editContactConfig({
               ...this.ruleForm,
             }).then(res=>{
               if(res.code==1){
@@ -84,9 +82,6 @@
                   message: '更新成功',
                   type: 'success'
                 });
-                setTimeout(()=>{
-                  that.$router.back()
-                },1000)
               }
             })
           } else {

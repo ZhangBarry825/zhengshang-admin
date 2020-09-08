@@ -1,8 +1,6 @@
 <template>
   <div class="page">
-    <MenuTitle title="新闻列表"></MenuTitle>
-    <MenuControl :right="{add:true,select:true}" path="/news/edit" :options="caseClassList"
-                 @selectChange="selectChange"></MenuControl>
+    <MenuTitle title="客户案例列表"></MenuTitle>
     <el-table
       v-loading="loading"
       :data="tableData"
@@ -12,26 +10,26 @@
         width="50">
       </el-table-column>
       <el-table-column
-        label="标题"
-        prop="title">
-      </el-table-column>
-      <el-table-column label="图片" width="150">
-        <template slot-scope="scope">
-          <el-image
-            style="width: 100px; height: 100px"
-            :src="scope.row.img"
-            fit="cover"
-            :preview-src-list="[scope.row.img]"></el-image>
-        </template>
+        label="姓名"
+        prop="name">
       </el-table-column>
       <el-table-column
-        label="描述"
+        label="详情"
         prop="remark">
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column
+        label="电话"
+        prop="mobile">
+      </el-table-column>
+      <el-table-column
+        label="创建时间"
+        prop="ctime">
+      </el-table-column>
+      <el-table-column label="操作" >
         <template slot-scope="scope">
           <el-button
             size="mini"
+            disabled
             @click="handleEdit(scope.$index, scope.row)">编辑
           </el-button>
           <el-button
@@ -60,34 +58,33 @@
   import MenuControl from "@/components/MenuControl/MenuControl";
   import {
     deleteCaseDetail,
-    deleteNewsDetail,
+    deleteContactDetail,
     deletePartner,
     fetchCaseClass,
     fetchCaseList,
-    fetchNewsClass, fetchNewsList
+    fetchContactList
   } from "@/api/admin";
 
   export default {
-    name: "NewsList",
+    name: "ContactList",
     components: {
       MenuTitle,
       MenuControl
     },
     data() {
       return {
-        pindex: '',
-        total: 0,
-        pageNum: 1,
-        pageSize: 10,
-        loading: false,
+        total:0,
+        pageNum:1,
+        pageSize:10,
+        loading:false,
         tableData: [{}],
-        caseClassList: []
+        caseClassList:[]
       }
     },
-    methods: {
+    methods:{
       handleEdit(index, row) {
         console.log(index, row);
-        this.$router.push('/news/edit?id=' + row.id)
+        this.$router.push('/case/edit?id='+row.id)
       },
       handleDelete(index, row) {
         let that = this
@@ -97,65 +94,51 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteNewsDetail({id: row.id}).then(res => {
-            if (res.code == 1) {
+          deleteContactDetail({id: row.id}).then(res=>{
+            if(res.code == 1){
               this.$message({
                 type: 'success',
                 message: '删除成功!'
               });
               that.fetchData(1)
-            } else {
+            }else {
               this.$message({
                 type: 'info',
                 message: '删除异常'
               });
             }
           })
-        }).catch(() => {
-        })
+        }).catch(() => { })
       },
-      selectChange(e) {
-        this.pindex = e
+      selectChange(e){
+        this.pindex=e
         this.fetchData(1)
       },
-      pageChange(e) {
+      pageChange(e){
         console.log(e)
         this.fetchData(e)
       },
-      async fetchCaseClass() {
+      async fetchData(pageNum=1){
         let that = this
-        let res = await fetchNewsClass()
-        res.data.unshift({
-          index: "",
-          title: "全部"
+        this.loading=true
+        let res = await fetchContactList({
+          page:pageNum,
+          limit:that.pageSize
         })
-        this.caseClassList = res.data
-        console.log(res.data)
-      },
-      async fetchData(pageNum = 1) {
-        let that = this
-        this.loading = true
-        let res = await fetchNewsList({
-          page: pageNum,
-          pindex: that.pindex,
-          limit: that.pageSize
-        })
-        if (res.code == 1) {
-          this.pageNum = pageNum
-          this.total = res.data.total
-          this.tableData = res.data.rows || []
+        if(res.code ==1 ){
+          this.pageNum=pageNum
+          this.total=res.data.total
+          this.tableData=res.data.rows || []
         }
 
-        setTimeout(() => {
-          that.loading = false
-        }, 500)
+        setTimeout(()=>{
+          that.loading=false
+        },500)
         console.log(res)
       }
     },
 
     mounted() {
-
-      this.fetchCaseClass()
       this.fetchData()
 
     }
@@ -163,8 +146,8 @@
 </script>
 
 <style scoped lang="scss">
-  .page {
-    .pagination {
+  .page{
+    .pagination{
       width: 100%;
       padding: 50px 0;
     }

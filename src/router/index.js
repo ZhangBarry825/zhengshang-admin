@@ -55,27 +55,6 @@ export const constantRoutes = [
     }]
   },
 
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: 'Example', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: 'Table', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: 'Tree', icon: 'tree' }
-  //     }
-  //   ]
-  // },
   {
     path: '/home',
     component: Layout,
@@ -131,13 +110,35 @@ export const constantRoutes = [
     path: '/business',
     name: 'Business',
     component: Layout,
-    meta: { title: '业务领域', icon: 'form' },
+    redirect: '/business/list',
+    meta: { title: '业务领域', icon: 'el-icon-s-check' },
     children: [
       {
         path: 'list',
         name: 'BusinessList',
         component: () => import('@/views/business/BusinessList'),
         meta: { title: '业务领域', icon: 'form' }
+      },
+      {
+        path: 'gov',
+        name: 'Gov',
+        component: () => import('@/views/business/index'),
+        meta: { title: '政务云', icon: 'form' },
+        children: [
+          {
+            path: 'list',
+            name: 'GovBannerList',
+            component: () => import('@/views/business/gov/GovBannerList'),
+            meta: { title: '政务云-轮播图', icon: 'form' }
+          },
+          {
+            path: 'edit',
+            name: 'GovBannerEdit',
+            component: () => import('@/views/business/gov/GovBannerEdit'),
+            meta: { title: '编辑轮播图', icon: 'form' },
+            hidden:true
+          },
+          ]
       },
       {
         path: 'config',
@@ -158,7 +159,7 @@ export const constantRoutes = [
     path: '/case',
     name: 'Case',
     component: Layout,
-    meta: { title: '客户案例', icon: 'form' },
+    meta: { title: '客户案例', icon: 'el-icon-s-cooperation' },
     children: [
       {
         path: 'list',
@@ -185,7 +186,7 @@ export const constantRoutes = [
     path: '/news',
     name: 'News',
     component: Layout,
-    meta: { title: '新闻中心', icon: 'form' },
+    meta: { title: '新闻中心', icon: 'el-icon-message-solid' },
     children: [
       {
         path: 'list',
@@ -212,7 +213,7 @@ export const constantRoutes = [
     path: '/about',
     name: 'About',
     component: Layout,
-    meta: { title: '关于我们', icon: 'form' },
+    meta: { title: '关于我们', icon: 'el-icon-s-flag' },
     children: [
       {
         path: 'edit',
@@ -229,6 +230,39 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/contact',
+    name: 'Contact',
+    component: Layout,
+    meta: { title: '联系我们', icon: 'el-icon-s-comment' },
+    children: [
+      {
+        path: 'list',
+        name: 'ContactList',
+        component: () => import('@/views/contact/ContactList'),
+        meta: { title: '留言列表', icon: 'form' },
+      },
+      {
+        path: 'config',
+        name: 'ContactConfig',
+        component: () => import('@/views/contact/ContactConfig'),
+        meta: { title: '页面配置', icon: 'form' }
+      },
+    ]
+  },
+  // {
+  //   path: '/header',
+  //   name: 'Header',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: () => import('@/views/home/Header'),
+  //       meta: { title: '导航信息', icon: 'el-icon-s-platform' }
+  //     }
+  //   ]
+  // },
+  {
     path: '/footer',
     name: 'Footer',
     component: Layout,
@@ -237,89 +271,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/home/Footer'),
-        meta: { title: '底部信息', icon: 'form' }
-      }
-    ]
-  },
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        meta: { title: '底部信息', icon: 'el-icon-s-platform' }
       }
     ]
   },

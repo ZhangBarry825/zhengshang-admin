@@ -34,8 +34,8 @@
           :action="baseUrl+'/admin/upload/save'"
           list-type="picture-card"
           name="image"
-          :auto-upload="false"
-          :file-list="fileList"
+          :limit="6"
+          :file-list="fileList3"
           :http-request="uploadRequest3"
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove">
@@ -69,11 +69,18 @@
     },
     data(){
       return{
-        fileList:[],
         baseUrl:this.$imgBaseUrl,
         dialogImageUrl: '',
         dialogVisible: false,
-        ruleForm3:{},
+        ruleForm3:{
+          img1:'',
+          img2:'',
+          img3:'',
+          img4:'',
+          img5:'',
+          img6:'',
+        },
+        fileList3:[],
         ruleForm2:{
           first:0,
           second:0,
@@ -128,6 +135,14 @@
 
         let res3=await fetchAboutConfigEnv()
         this.ruleForm3=res3.data
+        for (const key3 in res3.data) {
+          if(res3.data[key3]!=''){
+            this.fileList3.push({
+              name:key3,
+              url:res3.data[key3]
+            })
+          }
+        }
       },
       submitForm(formName) {
         let that = this
@@ -171,6 +186,9 @@
       },
       submitForm3(formName) {
         let that = this
+        that.formatRuleForm3()
+        console.log(that.ruleForm3,3333333333333)
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
             editAboutConfigEnv({
@@ -207,13 +225,15 @@
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
+        this.ruleForm3[file.name]=''
+        console.log(this.ruleForm3,888)
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
-      //TODO
       uploadRequest3(params) {
+        console.log(123123)
         let that = this
         const file = params.file,
           fileType = file.type,
@@ -234,7 +254,8 @@
         formData.append("image", file);
         return new Promise((resolve, reject) => {
           axios.post(that.baseUrl+'/admin/upload/save',formData).then(res => {
-            if (res.data || res.code == 1) {
+            if (res.data || res.data.code == 1) {
+              that.appendRuleForm3(res.data.data)
               resolve(res.data)
             }
           }).catch((e) => {
@@ -242,6 +263,35 @@
           })
         })
       },
+      appendRuleForm3(url){
+        for (const key in this.ruleForm3) {
+          if(this.ruleForm3[key]==''){
+            this.ruleForm3[key]=url
+            console.log(key)
+            break
+          }
+        }
+      },
+      formatRuleForm3(){
+        let newArr=[]
+        for (const key in this.ruleForm3) {
+          if(this.ruleForm3[key]!=''){
+            newArr.push(this.ruleForm3[key])
+          }
+        }
+        console.log(newArr,6666)
+        this.ruleForm3={
+          img1:'',
+          img2:'',
+          img3:'',
+          img4:'',
+          img5:'',
+          img6:'',
+        }
+        for (let i =0;i<newArr.length;i++){
+          this.ruleForm3['img'+(i+1)+'']=newArr[i]
+        }
+      }
     },
     mounted() {
       let id=this.$route.query.id

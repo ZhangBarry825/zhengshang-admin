@@ -1,7 +1,7 @@
 <template>
     <div class="page">
-      <MenuTitle title="客户案例列表"></MenuTitle>
-      <MenuControl :right="{add:true,select:true}" path="/case/edit" :options="caseClassList" @selectChange="selectChange"></MenuControl>
+      <MenuTitle title="政务云-轮播图"></MenuTitle>
+      <MenuControl :right="{add:true}" path="/business/gov/edit"></MenuControl>
       <el-table
         v-loading="loading"
         :data="tableData"
@@ -15,7 +15,7 @@
           prop="title"
           width="280">
         </el-table-column>
-        <el-table-column label="图片" width="150">
+        <el-table-column label="图片">
           <template slot-scope="scope">
             <el-image
               style="width: 100px; height: 100px"
@@ -25,11 +25,11 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="描述"
-          prop="remark"
+          label="详情"
+          prop="content"
           width="300">
         </el-table-column>
-        <el-table-column label="操作" >
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -43,45 +43,31 @@
           </template>
         </el-table-column>
       </el-table>
-
-      <div class="pagination">
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          @current-change="pageChange"
-          :total="total">
-        </el-pagination>
-      </div>
-
     </div>
 </template>
 
 <script>
     import MenuTitle from "@/components/MenuTitle/MenuTitle";
+    import Uploader from "@/components/Article/uploader/uploader";
+    import {deleteGovBanner, deletePartner, fetchBannerList, fetchGovBanner} from "@/api/admin";
     import MenuControl from "@/components/MenuControl/MenuControl";
-    import {deleteCaseDetail, deletePartner, fetchCaseClass, fetchCaseList} from "@/api/admin";
-
     export default {
-        name: "CaseList",
+      name: "GovBannerList",
       components: {
         MenuTitle,
+        Uploader,
         MenuControl
       },
-      data() {
-        return {
-          pindex:'',
-          total:0,
-          pageNum:1,
-          pageSize:10,
+      data(){
+        return{
           loading:false,
-          tableData: [{}],
-          caseClassList:[]
+          tableData: [{}]
         }
       },
-      methods:{
+      methods: {
         handleEdit(index, row) {
           console.log(index, row);
-          this.$router.push('/case/edit?id='+row.id)
+          this.$router.push('/business/gov/edit?id='+row.id)
         },
         handleDelete(index, row) {
           let that = this
@@ -91,13 +77,13 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            deleteCaseDetail({id: row.id}).then(res=>{
+            deleteGovBanner({id: row.id}).then(res=>{
               if(res.code == 1){
                 this.$message({
                   type: 'success',
                   message: '删除成功!'
                 });
-                that.fetchData(1)
+                that.fetchData()
               }else {
                 this.$message({
                   type: 'info',
@@ -107,59 +93,23 @@
             })
           }).catch(() => { })
         },
-        selectChange(e){
-          this.pindex=e
-          this.fetchData(1)
-        },
-        pageChange(e){
-          console.log(e)
-          this.fetchData(e)
-        },
-        async fetchCaseClass(){
-          let that = this
-          let res = await fetchCaseClass()
-          res.data.unshift({
-            index:"",
-            title:"全部"
-          })
-          this.caseClassList=res.data
-          console.log(res.data)
-        },
-        async fetchData(pageNum=1){
+        async fetchData(){
           let that = this
           this.loading=true
-          let res = await fetchCaseList({
-            page:pageNum,
-            pindex:that.pindex,
-            limit:that.pageSize
-          })
-          if(res.code ==1 ){
-            this.pageNum=pageNum
-            this.total=res.data.total
-            this.tableData=res.data.rows || []
-          }
-
+          let res = await fetchGovBanner()
+          this.tableData=res.data || []
           setTimeout(()=>{
             that.loading=false
           },500)
           console.log(res)
         }
       },
-
       mounted() {
-
-        this.fetchCaseClass()
         this.fetchData()
-
       }
     }
 </script>
 
 <style scoped lang="scss">
-.page{
-  .pagination{
-    width: 100%;
-    padding: 50px 0;
-  }
-}
+
 </style>

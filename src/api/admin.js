@@ -335,8 +335,89 @@ export function editAboutDetail(data) {
 }
 
 
+export function fetchContactConfig(data) {
+  return request({
+    url: '/admin/contact/get_ad',
+    method: 'get',
+    params: data
+  })
+}
+export function editContactConfig(data) {
+  return request({
+    url: '/admin/contact/update_ad',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteContactDetail(data) {
+  return request({
+    url: '/admin/contact/del_need',
+    method: 'post',
+    data
+  })
+}
+
+export function fetchContactList(data) {
+  return request({
+    url: '/admin/contact/get_needlist',
+    method: 'get',
+    params: data
+  })
+}
 
 
+export function deleteGovBanner(data) {
+  return request({
+    url: '/admin/cloud/delete_carousel',
+    method: 'post',
+    data
+  })
+}
+
+export function fetchGovBanner(data) {
+  return request({
+    url: '/admin/cloud/get_carousels',
+    method: 'get',
+    params: data
+  })
+}
+
+export function fetchGovBannerDetail(data) {
+  return request({
+    url: '/admin/cloud/get_carousel',
+    method: 'get',
+    params: data
+  })
+}
+export function editGovBannerDetail(data) {
+  return request({
+    url: '/admin/cloud/update_carousel',
+    method: 'post',
+    data
+  })
+}
+export function addGovBannerDetail(data) {
+  return request({
+    url: '/admin/cloud/save_carousel',
+    method: 'post',
+    data
+  })
+}
+export function fetchHeaderDetail(data) {
+  return request({
+    url: '/admin/nav/get_navs',
+    method: 'get',
+    params: data
+  })
+}
+export function editHeaderDetail(data) {
+  return request({
+    url: '/admin/nav/update_nav',
+    method: 'post',
+    data
+  })
+}
 
 
 

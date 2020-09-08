@@ -12,8 +12,7 @@
       </el-table-column>
       <el-table-column
         label="标题"
-        prop="title"
-        width="280">
+        prop="title">
       </el-table-column>
       <el-table-column label="图片" width="150">
         <template slot-scope="scope">
@@ -26,8 +25,7 @@
       </el-table-column>
       <el-table-column
         label="描述"
-        prop="remark"
-        width="300">
+        prop="remark">
       </el-table-column>
       <el-table-column label="操作" >
         <template slot-scope="scope">

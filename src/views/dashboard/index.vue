@@ -1,6 +1,10 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="center">
+      <div class="text">正尚网络科技</div>
+      <div class="text2">用户: {{ name }}</div>
+    </div>
+    <el-calendar v-model="value" class="calendar"></el-calendar>
   </div>
 </template>
 
@@ -13,6 +17,11 @@ export default {
     ...mapGetters([
       'name'
     ])
+  },
+  data(){
+    return{
+      value: new Date()
+    }
   }
 }
 </script>
@@ -21,10 +30,26 @@ export default {
 .dashboard {
   &-container {
     margin: 30px;
+    .center{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 20px;
+      .text {
+        font-weight: bolder;
+        font-size: 30px;
+        line-height: 46px;
+      }
+      .text2{
+        font-size: 18px;
+        line-height: 46px;
+      }
+
+    }
+    .calendar{
+      background-color: rgba(221,221,221,0.15) !important;
+    }
   }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
+
 }
 </style>
