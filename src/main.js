@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
 
-Vue.prototype.$imgBaseUrl='http://top.zhengshangwl.com'
+Vue.prototype.$imgBaseUrl='https://www.zhengshangwl.com'
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
